@@ -1,0 +1,76 @@
+
+<html>
+<head>
+<link rel="stylesheet" href="./semantic.min.css">
+<link rel="stylesheet" href="./components/menu.min.css">
+<link rel="stylesheet" href="./components/dropdown.min.css">
+<style>
+* { border-color:#7ec0ee !important; }	
+#main > div.left-container > div > div > table > tr:hover {
+  cursor:pointer;	
+}	
+.etherscan { cursor:pointer }	
+#footerModal > p {
+  font-weight:bold;	
+  margin-bottom:2%;	
+}
+#rightFooter { float:right; ont-weight:bold; margin-bottom:2%; }
+#main > div.left-container > div > div > table > thead > tr > th:hover { cursor:pointer; }
+#main > div.left-container > div > div > table > tbody > tr:hover { cursor:pointer; } 	
+#main > div.right-container > div > div > table > thead > tr > th:hover { cursor:pointer; }	
+</style>	
+</head>
+<body>
+<div class="ui basic modal one">
+  <div class="ui icon header">
+    <i class="paper plane icon"></i>
+	  This purchase will cost you&nbsp;<span id="ethAmount"></span>&nbsp;ETH
+	  <br><span id="buyPrice"></span>&nbsp;ETH</br> 
+  </div>
+  <script src="https://code.jquery.com/jquery-3.2.0.min.js"></script>
+<script src="https://cdn.rawgit.com/MikeMcl/bignumber.js/7269d028/bignumber.min.js"></script>
+<script type="text/javascript" src="https://cdn.rawgit.com/christianbach/tablesorter/07e09182/jquery.tablesorter.min.js"></script> 	
+<script src="https://cdn.rawgit.com/caolan/async/3741f80b/dist/async.min.js"></script>  
+<script src="js/script.js"></script>  
+<script src="./semantic.min.js"></script>
+<script src="./components/dropdown.min.js"></script>
+<script>
+$('#discord').on('click', function(){
+  window.open("https://discord.gg/xfwE7f9","_blank");      	
+});
+</script>
+<script>
+$('#footer').on('click', function() {
+  $('.small.modal').modal('show');	
+});	
+</script>	
+<script>
+$('.ui.dropdown')
+  .dropdown();
+</script>
+<script>
+		setInterval(function() {
+			web3.eth.getAccounts(function(err, accounts) {
+				if (err) return
+				let element = $("#metamask");
+				if (accounts[0]) {
+ 				  let userAddress = accounts[0];					
+  				  localStorage.setItem("userAddress", userAddress);					
+ 	  		          web3.eth.getBalance(userAddress, function(err, balance) {
+					let userBalance = (parseInt(balance)/1e18).toFixed(2);  
+					element.removeClass("negative");
+					element.addClass("success");
+					element.text("Metamask Unlocked");
+					$('#userAddress').text(userAddress);  
+					$('#userBalance').text(userBalance + " ETH");
+				  });	  
+				} else {
+					element.removeClass("success");
+					element.addClass("negative");
+					element.text("Metamask Locked");
+				}
+			})
+		}, 5000) 
+</script> 
+</body>
+</html>
